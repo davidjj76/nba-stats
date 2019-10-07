@@ -1,27 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import compose from './compose';
-import withFetch from './withFetch';
-import withProps from './withProps';
-import withLoading from './withLoading';
+import Fetch from './Fetch';
+import Loading from './Loading';
 
 const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-function Teams({ teams }) {
+function Teams() {
   return (
-    <div>
-      <Link to="/">Back</Link>
-      <ul>{teams.map(renderTeam)}</ul>
-    </div>
+    <Fetch url="https://www.balldontlie.io/api/v1/teams">
+      {teams => (
+        <Loading isLoading={() => !teams} loadingText="Loading teams...">
+          {() => (
+            <div>
+              <Link to="/">Back</Link>
+              <ul>{teams.map(renderTeam)}</ul>
+            </div>
+          )}
+        </Loading>
+      )}
+    </Fetch>
   );
 }
 
-export default compose(
-  withFetch('https://www.balldontlie.io/api/v1/teams'),
-  withProps(props => ({ teams: props.data })),
-  withLoading({
-    loadingText: 'Loading teams...',
-    isLoading: props => !props.teams,
-  }),
-)(Teams);
+export default Teams;
