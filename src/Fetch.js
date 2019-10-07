@@ -1,23 +1,13 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
-export default class Fetch extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: null,
-    };
-  }
+export default function Fetch({ url, children }) {
+  const [data, setData] = useState(null);
 
-  componentDidMount() {
-    const { url } = this.props;
+  useEffect(() => {
     fetch(url)
       .then(response => response.json())
-      .then(results => this.setState({ data: results.data }));
-  }
+      .then(results => setData(results.data));
+  }, [url]);
 
-  render() {
-    const { children } = this.props;
-    const { data } = this.state;
-    return children(data);
-  }
+  return children(data);
 }
