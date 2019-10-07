@@ -7,7 +7,7 @@ import Loading from './Loading';
 const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
 function Teams() {
-  const teams = useFetch('https://www.balldontlie.io/api/v1/teams');
+  const teams = useFetch('/teams');
   return (
     <Loading isLoading={() => !teams} loadingText="Loading teams...">
       {() => (
