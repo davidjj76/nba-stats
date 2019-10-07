@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import compose from './compose';
 import withFetch from './withFetch';
+import withProps from './withProps';
+import withLoading from './withLoading';
 
 const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-function Teams({ data: teams }) {
-  if (!teams) {
-    return <div>Loading...</div>;
-  }
-
+function Teams({ teams }) {
   return (
     <div>
       <Link to="/">Back</Link>
@@ -17,4 +17,11 @@ function Teams({ data: teams }) {
   );
 }
 
-export default withFetch('https://www.balldontlie.io/api/v1/teams')(Teams);
+export default compose(
+  withFetch('https://www.balldontlie.io/api/v1/teams'),
+  withProps(props => ({ teams: props.data })),
+  withLoading({
+    loadingText: 'Loading teams...',
+    isLoading: props => !props.teams,
+  }),
+)(Teams);
