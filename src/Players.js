@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import useFetch from './useFetch';
@@ -10,8 +10,26 @@ const renderPlayer = ({ id, first_name, last_name }) => (
 
 function Players() {
   const [search, setSearch] = useState('');
+
   const path = `/players${search && `?search=${search}`}`;
   const players = useFetch(path);
+
+  const inputRef = useRef(null);
+  const firstTime = useRef(true);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  });
+
+  useEffect(() => {
+    if (firstTime.current) {
+      console.log('Acabo de cargar el componente');
+      firstTime.current = false;
+    }
+  });
+
   return (
     <Loading isLoading={() => !players} loadingText="Loading players...">
       {() => (
@@ -24,6 +42,7 @@ function Players() {
                 name="search"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
+                ref={inputRef}
               />
             </label>
           </div>
