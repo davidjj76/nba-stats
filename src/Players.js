@@ -1,31 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import compose from './compose';
-import withFetch from './withFetch';
-import withProps from './withProps';
-import withLoading from './withLoading';
+import useFetch from './useFetch';
+import Loading from './Loading';
 
 const renderPlayer = ({ id, first_name, last_name }) => (
   <li key={id}>{`${first_name} ${last_name}`}</li>
 );
 
-function Players({ players }) {
+function Players() {
+  const [search, setSearch] = useState('');
+  const path = `/players${search && `?search=${search}`}`;
+  const players = useFetch(path);
   return (
-    <div>
-      <Link to="/">Back</Link>
-      <ul>{players.map(renderPlayer)}</ul>
-    </div>
+    <Loading isLoading={() => !players} loadingText="Loading players...">
+      {() => (
+        <div>
+          <Link to="/">Back</Link>
+          <div>
+            <label htmlFor="search">
+              Search:
+              <input
+                name="search"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </label>
+          </div>
+          <ul>{players.map(renderPlayer)}</ul>
+        </div>
+      )}
+    </Loading>
   );
 }
 
-export default compose(
-  withFetch('https://www.balldontlie.io/api/v1/players'),
-  withProps(props => ({
-    players: props.data,
-  })),
-  withLoading({
-    loadingText: 'Loading players...',
-    isLoading: props => !props.players,
-  }),
-)(Players);
+export default Players;
