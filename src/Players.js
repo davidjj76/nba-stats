@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import withFetch from './withFetch';
 import withProps from './withProps';
+import withLoading from './withLoading';
+
 import compose from './compose';
 
 const renderPlayer = ({ id, first_name, last_name }) => (
@@ -10,7 +12,6 @@ const renderPlayer = ({ id, first_name, last_name }) => (
 
 function Players(props) {
   const { players } = props;
-  if (!players) return <div>Loading...</div>;
   return (
     <div style={{ color: props.color }}>
       <Link to="/">Back</Link>
@@ -21,5 +22,6 @@ function Players(props) {
 
 export default compose(
   withFetch('https://www.balldontlie.io/api/v1/players?per_page=30'),
+  withLoading,
   withProps(props => ({ players: props.data })),
 )(Players);
