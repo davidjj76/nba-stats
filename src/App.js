@@ -8,7 +8,10 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/teams" component={Teams}></Route>
+        <Route
+          path="/teams"
+          render={props => <Teams color="blue" {...props} />}
+        ></Route>
         <Route path="/players" component={Players}></Route>
         <Route>
           <ul>

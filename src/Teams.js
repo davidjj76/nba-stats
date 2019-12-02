@@ -1,30 +1,27 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import withFetch from './withFetch';
+import withProps from './withProps';
+import compose from './compose';
 
-export default class Teams extends Component {
-  constructor() {
-    super();
-    this.state = {
-      teams: null,
-    };
-  }
+const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-  componentDidMount() {
-    fetch('https://www.balldontlie.io/api/v1/teams')
-      .then(response => response.json())
-      .then(results => this.setState({ teams: results.data }));
-  }
-
-  renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
-
-  render() {
-    const { teams } = this.state;
-    if (!teams) return <div>Loading...</div>;
-    return (
-      <div>
-        <Link to="/">Back</Link>
-        <ul>{teams.map(this.renderTeam)}</ul>
-      </div>
-    );
-  }
+export function Teams(props) {
+  const { teams } = props;
+  if (!teams) return <div>Loading...</div>;
+  return (
+    <div style={{ color: props.color }}>
+      <Link to="/">Back</Link>
+      <ul>{teams.map(renderTeam)}</ul>
+    </div>
+  );
 }
+
+export default compose(
+  withFetch('https://www.balldontlie.io/api/v1/teams'),
+  withProps(props => ({ teams: props.data })),
+)(Teams);
+
+// f(g(x))
+// compose
+// compose(f, g)(x) = f(g(x))
