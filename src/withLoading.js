@@ -1,4 +1,5 @@
 import React from 'react';
+import getDisplayName from './getDisplayName';
 
 export default function withLoading(WrappedComponent) {
   function WithLoading(props) {
@@ -7,6 +8,7 @@ export default function withLoading(WrappedComponent) {
     }
     return <WrappedComponent {...props} />;
   }
+  WithLoading.displayName = `WithLoading(${getDisplayName(WrappedComponent)})`;
 
   return WithLoading;
 }

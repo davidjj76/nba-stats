@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import getDisplayName from './getDisplayName';
 
 const withFetch = url => WrappedComponent => {
   class WithFetch extends Component {
@@ -22,6 +23,7 @@ const withFetch = url => WrappedComponent => {
       return <WrappedComponent {...this.props} {...newProps} />;
     }
   }
+  WithFetch.displayName = `WithFetch(${getDisplayName(WrappedComponent)})`;
   return WithFetch;
 };
 
