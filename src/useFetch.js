@@ -1,4 +1,5 @@
-import { useReducer, useEffect } from 'react';
+import { useContext, useReducer, useEffect } from 'react';
+import apiContext from './apiContext';
 
 const initValue = {
   isFetching: false,
@@ -19,8 +20,12 @@ function fetchReducer(state, action) {
   }
 }
 
-export default function useFetch(url) {
+export default function useFetch(path) {
+  const api = useContext(apiContext);
   const [value, dispatch] = useReducer(fetchReducer, initValue);
+
+  const url = `${api.baseUrl}${path}`;
+  console.log(url);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_REQUEST' });
