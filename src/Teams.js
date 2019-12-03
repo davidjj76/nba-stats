@@ -4,26 +4,21 @@ import withFetch from './withFetch';
 import withProps from './withProps';
 import withLoading from './withLoading';
 import Fetch from './Fetch';
+import useFetch from './useFetch';
 
 import compose from './compose';
 
 const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-const renderFunc = props => teams =>
-  teams && (
-    <div style={{ color: props.color }}>
-      <Link to="/">Back</Link>
-      <ul>{teams.map(renderTeam)}</ul>
-    </div>
-  );
-
 export default function Teams(props) {
-  const renderWithProps = renderFunc(props);
+  const teams = useFetch('https://www.balldontlie.io/api/v1/teams');
   return (
-    <Fetch
-      url="https://www.balldontlie.io/api/v1/teams"
-      render={renderWithProps}
-    ></Fetch>
+    teams && (
+      <div style={{ color: props.color }}>
+        <Link to="/">Back</Link>
+        <ul>{teams.map(renderTeam)}</ul>
+      </div>
+    )
   );
 }
 
