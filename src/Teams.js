@@ -11,7 +11,10 @@ import compose from './compose';
 const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
 export default function Teams(props) {
-  const teams = useFetch('https://www.balldontlie.io/api/v1/teams');
+  const { isFetching, data: teams, error } = useFetch(
+    'https://www.balldontlie.io/api/v1/teams',
+  );
+  console.log(isFetching, teams);
   return (
     teams && (
       <div style={{ color: props.color }}>
