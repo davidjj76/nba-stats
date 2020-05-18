@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-export default class Teams extends Component {
-  constructor() {
-    super();
-    this.state = {
-      teams: null,
-    };
-  }
+import withFetch from './withFetch';
 
-  componentDidMount() {
-    fetch('https://www.balldontlie.io/api/v1/teams')
-      .then(response => response.json())
-      .then(results => this.setState({ teams: results.data }));
-  }
-
+class Teams extends Component {
   renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
   render() {
-    const { teams } = this.state;
+    const { data: teams } = this.props;
     if (!teams) return <div>Loading...</div>;
     return (
       <div>
@@ -28,3 +17,5 @@ export default class Teams extends Component {
     );
   }
 }
+
+export default withFetch('https://www.balldontlie.io/api/v1/teams')(Teams);

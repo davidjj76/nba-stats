@@ -1,26 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-export default class Players extends Component {
-  constructor() {
-    super();
-    this.state = {
-      players: null,
-    };
-  }
+import withFetch from './withFetch';
 
-  componentDidMount() {
-    fetch('https://www.balldontlie.io/api/v1/players?per_page=30')
-      .then(response => response.json())
-      .then(results => this.setState({ players: results.data }));
-  }
-
+class Players extends Component {
   renderPlayer = ({ id, first_name, last_name }) => (
     <li key={id}>{`${first_name} ${last_name}`}</li>
   );
 
   render() {
-    const { players } = this.state;
+    const { data: players } = this.props;
     if (!players) return <div>Loading...</div>;
     return (
       <div>
@@ -30,3 +19,5 @@ export default class Players extends Component {
     );
   }
 }
+
+export default withFetch('https://www.balldontlie.io/api/v1/players')(Players);
