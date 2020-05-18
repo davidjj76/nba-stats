@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import withFetch from './withFetch';
+import withProps from './withProps';
+import { compose } from './compose';
 
 class Players extends Component {
   renderPlayer = ({ id, first_name, last_name }) => (
@@ -9,7 +11,7 @@ class Players extends Component {
   );
 
   render() {
-    const { data: players } = this.props;
+    const { players } = this.props;
     if (!players) return <div>Loading...</div>;
     return (
       <div>
@@ -20,4 +22,7 @@ class Players extends Component {
   }
 }
 
-export default withFetch('https://www.balldontlie.io/api/v1/players')(Players);
+export default compose(
+  withFetch('https://www.balldontlie.io/api/v1/players'),
+  withProps(props => ({ players: props.data }))
+)(Players);
