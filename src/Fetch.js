@@ -30,12 +30,14 @@ export default function Fetch({ url, children }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(url)
+    const controller = new AbortController();
+    fetch(url, { signal: controller.signal })
       .then(response => response.json())
-      .then(results => setData(results.data));
-    // return function () {
-    //   AbortController(url)
-    // }
+      .then(results => setData(results.data))
+      .catch(error => console.log(error));
+    return function () {
+      controller.abort();
+    };
   }, [url]);
 
   return children(data);
