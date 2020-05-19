@@ -8,9 +8,16 @@ export default function useFetch(path) {
   const url = `${baseUri}/${path}`;
 
   useEffect(() => {
-    fetch(url)
+    const controller = new AbortController();
+
+    fetch(url, { signal: controller.signal })
       .then(response => response.json())
-      .then(results => setData(results.data));
+      .then(results => setData(results.data))
+      .catch(error => console.log(error));
+
+    return function () {
+      controller.abort();
+    };
   }, [url]);
 
   return data;
