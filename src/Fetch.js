@@ -34,7 +34,7 @@ export default function Fetch({ url, children }) {
     fetch(url, { signal: controller.signal })
       .then(response => response.json())
       .then(results => setData(results.data))
-      .catch(error => console.log(error));
+      .catch(error => console.log(error.message));
     return function () {
       controller.abort();
     };
