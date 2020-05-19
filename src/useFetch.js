@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import apiContext from './apiContext';
 
-export default function useFetch(url) {
+export default function useFetch(path) {
+  const { baseUri } = useContext(apiContext);
   const [data, setData] = useState(null);
+
+  const url = `${baseUri}/${path}`;
 
   useEffect(() => {
     fetch(url)

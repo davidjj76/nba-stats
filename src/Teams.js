@@ -7,7 +7,7 @@ import useFecth from './useFetch';
 function Teams() {
   const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-  const teams = useFecth('https://www.balldontlie.io/api/v1/teams');
+  const teams = useFecth('teams');
 
   if (!teams) return <div>Loading...</div>;
   return (
