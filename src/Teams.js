@@ -1,26 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Fetch from './Fetch';
+// import Fetch from './Fetch';
+import useFecth from './useFetch';
 
-class Teams extends Component {
-  renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
+function Teams() {
+  const renderTeam = ({ id, full_name }) => <li key={id}>{full_name}</li>;
 
-  render() {
-    return (
-      <Fetch url="https://www.balldontlie.io/api/v1/teams">
-        {teams => {
-          if (!teams) return <div>Loading...</div>;
-          return (
-            <div>
-              <Link to="/">Back</Link>
-              <ul>{teams.map(this.renderTeam)}</ul>
-            </div>
-          );
-        }}
-      </Fetch>
-    );
-  }
+  const teams = useFecth('https://www.balldontlie.io/api/v1/teams');
+
+  if (!teams) return <div>Loading...</div>;
+  return (
+    <div>
+      <Link to="/">Back</Link>
+      <ul>{teams.map(renderTeam)}</ul>
+    </div>
+  );
 }
 
 export default Teams;
