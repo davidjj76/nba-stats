@@ -11,16 +11,14 @@ function App() {
         <Route path="/teams" component={Teams}></Route>
         <Route path="/players" component={Players}></Route>
         <Route>
-          {() => (
-            <ul>
-              <li>
-                <Link to="/teams">Teams</Link>
-              </li>
-              <li>
-                <Link to="/players">Players</Link>
-              </li>
-            </ul>
-          )}
+          <ul>
+            <li>
+              <Link to="/teams">Teams</Link>
+            </li>
+            <li>
+              <Link to="/players">Players</Link>
+            </li>
+          </ul>
         </Route>
       </Switch>
     </div>
